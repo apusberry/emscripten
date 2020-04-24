@@ -39,6 +39,11 @@ Current Trunk
 - Remove `BINARYEN_PASSES` settings.  We still have `BINARYEN_EXTRA_PASSES`, but
   completely overriding the set of passes from the command line didn't make much
   sense.
+- System libraries such as libc and libc++ are now included by default at
+  link time rather than selecitvly included based on the symbols uses in the
+  input object files.  For small programs that don't use any system libraries
+  this would result in slightly slower build time with the old fastcomp
+  backend.  In order to exclude these libraries build with `-nostdlib`.
 
 v1.39.13: 04/17/2020
 --------------------
