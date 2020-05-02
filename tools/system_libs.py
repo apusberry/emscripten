@@ -1640,6 +1640,10 @@ def calculate(temp_files, in_temp, cxx, forced, stdout_=None, stderr_=None):
   if shared.Settings.JS_MATH:
     libs_to_link = [(system_libs_map['libjsmath'].get_path(), True)] + libs_to_link
 
+  # When LINKABLE is set the whole link line is wrapped in --whole-archive
+  if shared.Settings.LINKABLE and shared.Settings.WASM_BACKEND:
+    return [l[0] for l in libs_to_link]
+
   # Wrap libraries in --whole-archive, as needed.  We need to do this last
   # since otherwise the abort sorting won't make sense.
   ret = []
