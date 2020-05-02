@@ -1339,10 +1339,10 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
     if shared.Settings.USE_WEBGL2:
       shared.Settings.MAX_WEBGL_VERSION = 2
 
-    include_stdlibs = []
+    included_stdlibs = []
 
     if shared.Settings.ASMFS and final_suffix in JS_CONTAINING_ENDINGS:
-      include_stdlibs.append('libasmfs')
+      included_stdlibs.append('libasmfs')
       cflags.append('-D__EMSCRIPTEN_ASMFS__=1')
       next_arg_index += 1
       shared.Settings.FILESYSTEM = 0
@@ -1358,7 +1358,7 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
       shared.Settings.SYSTEM_JS_LIBRARIES.append(shared.path_from_root('src', 'library_emmalloc.js'))
 
     if shared.Settings.FETCH and final_suffix in JS_CONTAINING_ENDINGS:
-      include_stdlibs.append('libfetch')
+      included_stdlibs.append('libfetch')
       next_arg_index += 1
       shared.Settings.SYSTEM_JS_LIBRARIES.append(shared.path_from_root('src', 'library_fetch.js'))
       if shared.Settings.USE_PTHREADS:
@@ -1378,7 +1378,7 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
 
     if shared.Settings.DEMANGLE_SUPPORT:
       shared.Settings.EXPORTED_FUNCTIONS += ['___cxa_demangle']
-      include_stdlibs.append('libc++abi')
+      #included_stdlibs.append('libc++abi')
 
     if shared.Settings.FULL_ES3:
       shared.Settings.FULL_ES2 = 1
@@ -1386,7 +1386,7 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
 
     if shared.Settings.EMBIND:
       shared.Settings.EXPORTED_FUNCTIONS += ['___getTypeName']
-      include_stdlibs.append('libembind')
+      included_stdlibs.append('libembind')
 
     if not shared.Settings.MINIMAL_RUNTIME and not shared.Settings.STANDALONE_WASM:
       # The normal JS runtime depends on malloc and free so always keep them alive.
@@ -2271,7 +2271,7 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
          not shared.Settings.SIDE_MODULE: # shared libraries/side modules link no C libraries, need them in parent
         extra_files_to_link = system_libs.get_ports(shared.Settings)
         if '-nostdlib' not in newargs and '-nodefaultlibs' not in newargs:
-          extra_files_to_link += system_libs.calculate([f for _, f in sorted(temp_files)] + extra_files_to_link, in_temp, include_libs=include_stdlibs)
+          extra_files_to_link += system_libs.calculate([f for _, f in sorted(temp_files)] + extra_files_to_link, in_temp, always_include=included_stdlibs)
         linker_inputs += extra_files_to_link
 
     # exit block 'calculate system libraries'
