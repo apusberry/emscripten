@@ -39,3 +39,4 @@ License allows Emscripten's code to be integrated upstream into
 LLVM, which uses that license, should the opportunity arise.
 
 See `LICENSE` for the full content of the licenses.
+Enjoy Thanks 🎉
